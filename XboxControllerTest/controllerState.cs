@@ -1,5 +1,5 @@
 ﻿//
-//  xButtons.cs
+//  controllerState.cs
 //
 //  Author:
 //       Michael Sullender <squiblez@gmail.com>
@@ -23,18 +23,13 @@
 using System;
 namespace XboxControllerTest
 {
-    public enum xButtons
+    public class controllerState
     {
-        A = 0x00,
-        B = 0x01,
-        X = 0x02,
-        Y = 0x03,
-        LeftBumper = 0x04,
-        RightBumper = 0x05,
-        Select = 0x06,
-        Start = 0x07,
-        XboxMenu = 0x08,
-        LeftStick = 0x09,
-        RightStick = 0x0A
+        public bool[] buttons = new bool[0x0B];
+
+        public controllerState()
+        {
+
+        }
     }
 }

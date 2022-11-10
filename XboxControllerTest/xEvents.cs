@@ -25,7 +25,8 @@ namespace XboxControllerTest
 {
     public enum xEvents
     {
-        ButtonRelease = 0x00,
-        ButtonPressed = 0x01
+        None = 0x00,
+        ButtonAction = 0x01,
+        AxisMoved = 0x02
     }
 }

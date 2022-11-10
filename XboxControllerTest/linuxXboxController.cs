@@ -36,6 +36,8 @@ namespace XboxControllerTest
         //the list of Bytes, it is represented as a list incase an incorrect joystick type is connected and has more bytes
         public List<byte> deviceBytes = new List<byte>();
 
+        public controllerState state = new controllerState();
+
         /// <summary>
         /// Creates a new Xbox controller instance from a device file
         /// </summary>
@@ -80,6 +82,8 @@ namespace XboxControllerTest
 
                     //Insert bytes into buffer(in order)
                     deviceBytes.Add((byte)data);
+
+
                 }
                 //Increase counter
                 counter++;
@@ -88,6 +92,31 @@ namespace XboxControllerTest
 
             //Reset counter
             counter = 0;
+
+            //Grab the event type identifier byte and cast it to xEvents enum
+            xEvents eventType = (xEvents)deviceBytes.ToArray()[6];
+
+            //Check for button event
+            if(eventType == xEvents.ButtonAction)
+            {
+                Console.WriteLine("Button action event!");
+                xButtons button = (xButtons)deviceBytes.ToArray()[7];
+
+                byte buttonAction = deviceBytes.ToArray()[5];
+                Console.Write(button.ToString());
+
+                if(buttonAction == 0x01)
+                {
+                    state.buttons[(byte)button] = true;
+                    Console.WriteLine(" pressed.");
+                }
+                else
+                {
+                    state.buttons[(byte)button] = false;
+                    Console.WriteLine(" released.");
+
+                }
+            }
 
             return output;
         }

@@ -37,6 +37,8 @@
     <Compile Include="linuxXboxController.cs" />
     <Compile Include="xButtons.cs" />
     <Compile Include="xEvents.cs" />
+    <Compile Include="controllerState.cs" />
+    <Compile Include="xBytes.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
