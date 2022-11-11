@@ -32,15 +32,18 @@ namespace XboxControllerTest
         {   
             //Attempt to create object from /dev/input/js1
             //you may need to manually locate the device file and adjust this line
-            linuxXboxController xcont = new linuxXboxController("/dev/input/js1");
+            linuxXboxController xcont = new linuxXboxController("/dev/input/js1", true);
+            
             do
             {   
                 //Check if an update to the controllers state has happened
                 if(xcont.update())
                 {
+                    //Uncomment the code below to have raw bytes printed to console after each update is detected
+
                     //Convert the bytes to a string and print them
-                    string hex = BitConverter.ToString(xcont.deviceBytes.ToArray());
-                    Console.WriteLine(hex);
+                    //string hex = BitConverter.ToString(xcont.deviceBytes.ToArray());
+                    //Console.WriteLine(hex);
                 }
 
             } while (true);

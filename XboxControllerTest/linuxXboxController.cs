@@ -33,18 +33,25 @@ namespace XboxControllerTest
         //external counter
         int counter = 0;
 
+        //debug flag(setting true will make updates print information about the parsed bytes
+        bool debug = false;
+
         //the list of Bytes, it is represented as a list incase an incorrect joystick type is connected and has more bytes
         public List<byte> deviceBytes = new List<byte>();
+
+        //The create new abstraction class to save information parsed from the raw device file
+        public controllerState state = new controllerState();
 
         /// <summary>
         /// Creates a new Xbox controller instance from a device file
         /// </summary>
         /// <param name="devicefile">Full path to device.</param>
-        public linuxXboxController(string devicefile)
+        public linuxXboxController(string devicefile, bool deviceDebug = false)
         {
             try
             {
                 deviceStream = File.Open("/dev/input/js1", FileMode.Open);
+                debug = deviceDebug;
             }
             catch (Exception ex)
             {   
@@ -80,6 +87,8 @@ namespace XboxControllerTest
 
                     //Insert bytes into buffer(in order)
                     deviceBytes.Add((byte)data);
+
+
                 }
                 //Increase counter
                 counter++;
@@ -88,6 +97,46 @@ namespace XboxControllerTest
 
             //Reset counter
             counter = 0;
+
+            //Grab the event type identifier byte and cast it to xEvents enum
+            xEvents eventType = (xEvents)deviceBytes.ToArray()[6];
+
+            //Check for button event
+            if(eventType == xEvents.ButtonAction)
+            {
+                if (debug) Console.WriteLine("Button action event!");
+                xButtons button = (xButtons)deviceBytes.ToArray()[7];
+                byte buttonAction = deviceBytes.ToArray()[5];
+                if (debug) Console.Write(button.ToString());
+                if(buttonAction == 0x01)
+                {
+                    state.buttons[(byte)button] = true;
+                    if (debug) Console.WriteLine(" pressed.");
+                }
+                else
+                {
+                    state.buttons[(byte)button] = false;
+                    if (debug) Console.WriteLine(" released.");
+                }
+            }
+            //Check for axis event
+            else if(eventType == xEvents.AxisMoved)
+            {
+                if (debug) Console.WriteLine("Axis action event!");
+                xAxis axis = (xAxis)deviceBytes.ToArray()[7];
+                if (debug) Console.Write(axis.ToString());
+                byte[] cbytes = { deviceBytes.ToArray()[3], deviceBytes.ToArray()[4] };
+                Int16 value = BitConverter.ToInt16(cbytes, 0);
+                state.axis[(byte)axis] = value;
+
+                if (debug) Console.WriteLine(" moved to " + value.ToString());
+            }
+            else
+            {
+                if (debug) Console.WriteLine("Unknown event occured(this is normal immediately after connection)");
+            }
+
+
 
             return output;
         }
