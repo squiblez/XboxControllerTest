@@ -50,7 +50,7 @@ namespace XboxControllerTest
         {
             try
             {
-                deviceStream = File.Open("/dev/input/js1", FileMode.Open);
+                deviceStream = File.Open(devicefile, FileMode.Open);
                 debug = deviceDebug;
             }
             catch (Exception ex)
