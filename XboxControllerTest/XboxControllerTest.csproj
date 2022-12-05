@@ -40,6 +40,7 @@
     <Compile Include="controllerState.cs" />
     <Compile Include="xBytes.cs" />
     <Compile Include="xAxis.cs" />
+    <Compile Include="xButtonEventTypes.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

@@ -106,14 +106,15 @@ namespace XboxControllerTest
             {
                 if (debug) Console.WriteLine("Button action event!");
                 xButtons button = (xButtons)deviceBytes.ToArray()[7];
-                byte buttonAction = deviceBytes.ToArray()[5];
+                xButtonEventTypes buttonAction = (xButtonEventTypes)deviceBytes.ToArray()[4];
                 if (debug) Console.Write(button.ToString());
-                if(buttonAction == 0x01)
+
+                if(buttonAction == xButtonEventTypes.Pressed)
                 {
                     state.buttons[(byte)button] = true;
                     if (debug) Console.WriteLine(" pressed.");
                 }
-                else
+                else if(buttonAction == xButtonEventTypes.Released)
                 {
                     state.buttons[(byte)button] = false;
                     if (debug) Console.WriteLine(" released.");

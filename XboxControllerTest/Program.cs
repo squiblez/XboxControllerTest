@@ -42,8 +42,8 @@ namespace XboxControllerTest
                     //Uncomment the code below to have raw bytes printed to console after each update is detected
 
                     //Convert the bytes to a string and print them
-                    //string hex = BitConverter.ToString(xcont.deviceBytes.ToArray());
-                    //Console.WriteLine(hex);
+                    string hex = BitConverter.ToString(xcont.deviceBytes.ToArray());
+                    Console.WriteLine(hex);
                 }
 
             } while (true);
